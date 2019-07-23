@@ -1,8 +1,8 @@
 # 3scale-auth0-wrapper
 
-This is a wrapper between 3scale and auth0. It exposes API for zync (component of 3scale which manages communication with IDPs).
+This is a wrapper between 3scale and auth0. It exposes API for zync (a component of 3scale which manages communication with IDPs).
 
-It implements a openAPI specification shared in zync component https://github.com/3scale/zync/tree/master/examples/rest-api
+It implements an openAPI specification shared in zync component https://github.com/3scale/zync/tree/master/examples/rest-api
 
 
 ## Run locally:
