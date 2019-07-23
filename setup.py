@@ -16,7 +16,7 @@ setup(name='3scale-auth0-wrapper',
       long_description_content_type='text/markdown',
       include_package_data=True,
       install_requires=[
-        'Flask', 'python-dotenv', 'requests'
+        'Flask', 'python-dotenv', 'requests', 'gevent'
     ],
       entry_points={},
       classifiers=[

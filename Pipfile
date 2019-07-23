@@ -6,6 +6,8 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+gunicorn = "*"
+gevent = "*"
 pylint = "*"
 Flask = "*"
 python-dotenv = "*"

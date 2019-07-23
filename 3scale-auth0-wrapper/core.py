@@ -3,8 +3,8 @@
 import requests
 
 from flask import Flask, request, make_response
-from config import auth0_client_url, auth0_oidc_config_url
-from auth0.client import threescale_format, auth0_format
+from .config import auth0_client_url, auth0_oidc_config_url
+from .auth0.client import threescale_format, auth0_format
 
 app = Flask(__name__)
 

@@ -17,10 +17,11 @@ COPY . /3scale-auth0-wrapper/
 
 ADD Pipfile Pipfile.lock /3scale-auth0-wrapper/
 WORKDIR /3scale-auth0-wrapper
+RUN /bin/bash -c "pip3 install --no-cache-dir -r <(pipenv lock -r)"
 
+ADD . /3scale-auth0-wrapper
 RUN pip3 install --no-cache-dir /3scale-auth0-wrapper
 
 EXPOSE 80
 
-ENTRYPOINT ["python3.7"]
-CMD ["3scale-auth0-wrapper/core.py"]
+CMD ["gunicorn", "-b", "0.0.0.0:80", "3scale-auth0-wrapper:app", "-k", "gevent"]
