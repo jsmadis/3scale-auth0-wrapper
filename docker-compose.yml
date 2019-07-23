@@ -1,6 +1,6 @@
 version: '2'
 services:
-    3scale-auth0-wrapper:
+    threescale-auth0-wrapper:
       build: '.'
       ports:
         - '80:80'

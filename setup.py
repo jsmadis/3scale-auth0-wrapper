@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 
-setup(name='3scale-auth0-wrapper',
+setup(name='threescale-auth0-wrapper',
       version='0.1',
       description='Wrapper between 3scale and auth0',
       author='Jakub Smadiš',

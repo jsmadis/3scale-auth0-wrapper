@@ -3,7 +3,7 @@ FROM python:3.7
 
 MAINTAINER Jakub Smadiš "jakub.smadis@gmail.com"
 
-LABEL name="3scale-auth0-wrapper"0
+LABEL name="threescale-auth0-wrapper"0
 LABEL version="0.1"
 LABEL description="A simple wrapper between 3scale and auth0"
 
@@ -13,15 +13,15 @@ ENV LANG=C.UTF-8
 
 ADD Pipfile Pipfile.lock /httpbin/
 RUN pip3 install --no-cache-dir pipenv
-COPY . /3scale-auth0-wrapper/
+COPY . /threescale-auth0-wrapper/
 
-ADD Pipfile Pipfile.lock /3scale-auth0-wrapper/
-WORKDIR /3scale-auth0-wrapper
+ADD Pipfile Pipfile.lock /threescale-auth0-wrapper/
+WORKDIR /threescale-auth0-wrapper
 RUN /bin/bash -c "pip3 install --no-cache-dir -r <(pipenv lock -r)"
 
-ADD . /3scale-auth0-wrapper
-RUN pip3 install --no-cache-dir /3scale-auth0-wrapper
+ADD . /threescale-auth0-wrapper
+RUN pip3 install --no-cache-dir /threescale-auth0-wrapper
 
 EXPOSE 80
 
-CMD ["gunicorn", "-b", "0.0.0.0:80", "3scale-auth0-wrapper:app", "-k", "gevent"]
+CMD ["gunicorn", "-b", "0.0.0.0:80", "threescale-auth0-wrapper:app", "-k", "gevent"]
