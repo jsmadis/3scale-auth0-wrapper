@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+
 FROM python:3.7
 
 MAINTAINER Jakub Smadiš "jakub.smadis@gmail.com"
@@ -8,24 +8,23 @@ LABEL version="0.1"
 LABEL description="A simple wrapper between 3scale and auth0"
 
 RUN useradd -m user
+WORKDIR /home/user
+
+COPY . /threescale-auth0-wrapper/
+RUN python -m venv venv
+RUN venv/bin/pip install --upgrade pip
+RUN venv/bin/pip install pipenv
+RUN venv/bin/pip install gunicorn
+RUN /bin/bash -c "venv/bin/pip install -r <(venv/bin/pipenv lock -r)"
+ADD . /threescale-auth0-wrapper
+RUN venv/bin/pip install  /threescale-auth0-wrapper
+
+COPY . .
+
+RUN chmod +x startup.sh
+RUN chown -R user:user ./
 USER user
 
-ENV PATH="/home/user/.local/bin:${PATH}"
 
-ENV LC_ALL=C.UTF-8
-ENV LANG=C.UTF-8
-
-ADD Pipfile Pipfile.lock /threescale-auth0-wrapper/
-RUN pip install --user --no-cache-dir pipenv
-COPY . /threescale-auth0-wrapper/
-
-ADD Pipfile Pipfile.lock /threescale-auth0-wrapper/
-WORKDIR /threescale-auth0-wrapper
-RUN /bin/bash -c "pip install --user -r <(pipenv lock -r)"
-
-ADD . /threescale-auth0-wrapper
-RUN pip install --user /threescale-auth0-wrapper
-
-EXPOSE 80
-
-CMD ["gunicorn", "-b", "0.0.0.0:80", "threescale-auth0-wrapper:app", "-k", "gevent"]
+EXPOSE 8080
+CMD ["./startup.sh"]

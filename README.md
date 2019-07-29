@@ -8,6 +8,6 @@ It implements an openAPI specification shared in zync component https://github.c
 ## Run locally:
 ```
 docker pull jsmadis/3scale-auth0-wrapper
-docker run -p 80:80 --env AUTH0_URL="https://example.com" 
+docker run -p 8080:8080 --env AUTH0_URL="https://example.com" jsmadis/auth0-3scale-wrapper:latest
 ```
 Where `AUTH0_URL` is URL to your auth0 API.
