@@ -4,7 +4,7 @@ import requests
 import logging
 
 from .auth0.client import threescale_format, auth0_format, threescale_token_format
-from .config import auth0_client_url, auth0_oidc_config_url
+from .config import auth0_client_id_url, auth0_oidc_config_url, auth0_clients_url
 from flask import Flask, request, make_response
 
 app = Flask(__name__)
@@ -24,6 +24,7 @@ def before_request():
 @app.after_request
 def after_request(response):
     app.logger.debug('[RESPONSE] Content: %s', response.data)
+    response.headers['Content-Type'] = 'application/json'
     return response
 
 
@@ -35,31 +36,40 @@ def oidc_config():
 
 @app.route("/clients/<path:client_id>", methods=["GET"])
 def client_get(client_id: str):
-    headers = request.headers
-    response = requests.get(auth0_client_url(client_id), headers=headers)
+    headers = {
+        'Authorization': request.headers.get('Authorization'),
+        'Content-Type':  request.headers.get('Content-Type')
+       }
+    response = requests.get(auth0_client_id_url(client_id), headers=headers)
     return make_response(threescale_format(response.content), response.status_code)
 
 
 @app.route("/clients/<path:client_id>", methods=["PUT"])
 def client_put(client_id: str):
-    headers = request.headers
+    headers = {
+        'Authorization': request.headers.get('Authorization'),
+        'Content-Type': request.headers.get('Content-Type')
+    }
     payload = auth0_format(request.data)
     if check_client_existence(client_id, headers):
-        response = requests.patch(auth0_client_url(client_id), data=payload, headers=headers)
+        response = requests.patch(auth0_client_id_url(client_id), data=payload, headers=headers)
     else:
-        response = requests.post(auth0_client_url(client_id), data=payload, headers=headers)
+        response = requests.post(auth0_clients_url(), data=payload, headers=headers)
     return make_response(threescale_format(response.content), response.status_code)
 
 
 @app.route("/clients/<path:client_id>", methods=["DELETE"])
 def client_delete(client_id: str):
-    headers = request.headers
-    response = requests.delete(auth0_client_url(client_id), headers=headers)
+    headers = {
+        'Authorization': request.headers.get('Authorization'),
+        'Content-Type': request.headers.get('Content-Type')
+    }
+    response = requests.delete(auth0_client_id_url(client_id), headers=headers)
     return make_response(threescale_format(response.content), response.status_code)
 
 
 def check_client_existence(client_id: str, headers: dict):
-    response = requests.get(auth0_client_url(client_id), headers=headers)
+    response = requests.get(auth0_client_id_url(client_id), headers=headers)
     return response.status_code == 200
 
 
