@@ -3,7 +3,7 @@
 import requests
 import logging
 
-from .auth0.client import threescale_format, auth0_format
+from .auth0.client import threescale_format, auth0_format, threescale_token_format
 from .config import auth0_client_url, auth0_oidc_config_url
 from flask import Flask, request, make_response
 
@@ -17,20 +17,20 @@ if __name__ != "__main__":
 
 @app.before_request
 def before_request():
-    app.logger.debug('Headers: %s', request.headers)
-    app.logger.debug('Body: %s', request.get_data())
+    app.logger.debug('[REQUEST] Headers: %s', request.headers)
+    app.logger.debug('[REQUEST] Body: %s', request.get_data())
 
 
 @app.after_request
 def after_request(response):
-    app.logger.debug('Content: %s', response.data)
+    app.logger.debug('[RESPONSE] Content: %s', response.data)
     return response
 
 
 @app.route("/.well-known/openid-configuration", methods=["GET"])
 def oidc_config():
     response = requests.get(auth0_oidc_config_url())
-    return response.content
+    return make_response(threescale_token_format(response.content), response.status_code)
 
 
 @app.route("/clients/<path:client_id>", methods=["GET"])
