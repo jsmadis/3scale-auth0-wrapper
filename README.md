@@ -11,3 +11,7 @@ docker pull jsmadis/3scale-auth0-wrapper
 docker run -p 8080:8080 --env AUTH0_URL="https://example.com" jsmadis/auth0-3scale-wrapper:latest
 ```
 Where `AUTH0_URL` is URL to your auth0 API.
+
+
+
+#This wrapper doesn't work right now because auth0 doesn't support creating oidc clients with specific client_id.
